@@ -3,7 +3,7 @@
 #include<semaphore.h>
 #include<pthread.h>
 #include<stdbool.h>
-#define MAX_RESOURCES 10
+#define MAX_RESOURCES 5
 int avl_resources=MAX_RESOURCES;
 sem_t sema,dema,mema;
 bool pro[5]={false};
@@ -30,7 +30,15 @@ int increase_count(int count)
 void *fun1(void *a)
 {
 int licenses=*(int *)a;int k;
-int francy=licenses;
+int francy=0;
+if(licenses>MAX_RESOURCES)
+{
+	francy=MAX_RESOURCES;
+}
+else
+{
+	francy=licenses;
+}
 int wcount=0;
 
 while(!pro[0])
@@ -53,9 +61,9 @@ even:
 	}
 	else
 	{	
-		if(wcount>3) sleep(5);
-		printf("\n\napplication1   denied(cant run cocurrently)  %d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
-		sem_wait(&dema);
+		
+		printf("\n\napplication1          denied   %15d  %15d %15d ",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
+		if(wcount>3) sleep(5);sem_wait(&dema);
 		if(avl_resources>0 && licenses>avl_resources)
 		{
 			francy=avl_resources;sem_post(&dema);
@@ -73,7 +81,15 @@ pthread_exit(NULL);
 void *fun2(void *a)
 {
 int licenses=*(int *)a;int k;
-int francy=licenses;
+int francy=0;
+if(licenses>MAX_RESOURCES)
+{
+	francy=MAX_RESOURCES;
+}
+else
+{
+	francy=licenses;
+}
 int wcount=0;
 while(!pro[1])
 {
@@ -87,7 +103,7 @@ even:
 	
 	printf("\n\napplication2          acquired   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	if(licenses==0 ) pro[1]=true;
-	sem_post(&dema);sleep(4);
+	sleep(4);sem_post(&dema);
 	int mx=increase_count(francy);
 	if(mx==1) printf("\n\napplication2          released   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	francy=licenses;
@@ -95,9 +111,9 @@ even:
 	}
 	else
 	{	
-		if(wcount>3) sleep(5);
-		printf("\n\napplication2  denied(cant run cocurrently)  %d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
-		sem_wait(&dema);
+		
+		printf("\n\napplication2          denied   %15d  %15d %15d ",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
+		if(wcount>3) sleep(5);sem_wait(&dema);
 		if(avl_resources>0 && licenses>avl_resources)
 		{
 			francy=avl_resources;sem_post(&dema);
@@ -116,7 +132,15 @@ pthread_exit(NULL);
 void *fun3(void *a)
 {
 int licenses=*(int *)a;int k;
-int francy=licenses;
+int francy=0;
+if(licenses>MAX_RESOURCES)
+{
+	francy=MAX_RESOURCES;
+}
+else
+{
+	francy=licenses;
+}
 int wcount=0;
 while(!pro[2])
 {
@@ -129,7 +153,7 @@ even:
 	{sem_wait(&dema);	licenses=licenses-francy;
 	printf("\n\napplication3          acquired   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	if(licenses==0 ) pro[2]=true;
-	sem_post(&dema);sleep(4);
+	sleep(4);sem_post(&dema);
 	int mx=increase_count(francy);
 	if(mx==1) printf("\n\napplication3          released   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	francy=licenses;
@@ -137,8 +161,8 @@ even:
 	}
 	else
 	{	
+	printf("\n\napplication3          denied   %15d  %15d %15d ",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 		if(wcount>3) sleep(5);	
-	printf("\n\napplication3    denied(cant run cocurrently)   %d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES,avl_resources));
 		sem_wait(&dema);
 		if(avl_resources>0 && licenses>avl_resources)
 		{
@@ -158,7 +182,15 @@ pthread_exit(NULL);
 void *fun4(void *a)
 {
 int licenses=*(int *)a;int k;
-int francy=licenses;
+int francy=0;
+if(licenses>MAX_RESOURCES)
+{
+	francy=MAX_RESOURCES;
+}
+else
+{
+	francy=licenses;
+}
 int wcount=0;
 while(!pro[3])
 {
@@ -171,16 +203,16 @@ even:
 	{sem_wait(&dema);	licenses=licenses-francy;
 	printf("\n\napplication4          acquired   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	if(licenses==0 ) pro[3]=true;
-	sem_post(&dema);sleep(4);
+	sleep(4);sem_post(&dema);
 	int mx=increase_count(francy);
 	if(mx==1) printf("\n\napplication4          released   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	francy=licenses;
 	sem_post(&sema);
 	}
 	else
-	{	if(wcount>3) sleep(5);
-	printf("\n\napplication4    denied(cant run cocurrently)   %d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES,avl_resources));
-		sem_wait(&dema);
+	{	
+	printf("\n\napplication4          denied   %15d  %15d %15d ",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
+		if(wcount>3) sleep(5);sem_wait(&dema);
 		if(avl_resources>0 && licenses>avl_resources)
 		{
 			francy=avl_resources;sem_post(&dema);
@@ -199,7 +231,15 @@ pthread_exit(NULL);
 void *fun5(void *a)
 {
 int licenses=*(int *)a;int k;
-int francy=licenses;
+int francy=0;
+if(licenses>MAX_RESOURCES)
+{
+	francy=MAX_RESOURCES;
+}
+else
+{
+	francy=licenses;
+}
 int wcount=0;
 while(!pro[4])
 {
@@ -212,16 +252,16 @@ even:
 	{sem_wait(&dema);	licenses=licenses-francy;
 	printf("\n\napplication5          acquired   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	if(licenses==0 ) pro[4]=true;
-	sem_post(&dema);sleep(4);
+	sleep(4);sem_post(&dema);
 	int mx=increase_count(francy);
 	if(mx==1) printf("\n\napplication5          released   %15d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
 	francy=licenses;
 	sem_post(&sema);
 	}
 	else
-	{	if(wcount>3) sleep(5);
-	printf("\n\napplication5    denied(cant run cocurrently)   %d  %15d %15d",licenses,avl_resources,(MAX_RESOURCES,avl_resources));
-		sem_wait(&dema);
+	{	
+	printf("\n\napplication5          denied   %15d  %15d %15d ",licenses,avl_resources,(MAX_RESOURCES-avl_resources));
+		if(wcount>3) sleep(5);sem_wait(&dema);
 		if(avl_resources>0 && licenses>avl_resources)
 		{
 			francy=avl_resources;sem_post(&dema);
@@ -236,9 +276,6 @@ printf("\n\napplication5 completed");
 pthread_exit(NULL);
 
 }
-
-
-			
 int main()
 {
 sem_init(&sema,5,5);
@@ -250,11 +287,7 @@ printf("\nThere are only %d resources so provide input 1<=x<=%d",MAX_RESOURCES,M
 for(int i=1;i<=5;i++)
 {
 	printf("\napplication %d :",i);scanf("%d",&licenses[i-1]);
-	if(licenses[i-1]>MAX_RESOURCES)
-	{
-		printf("\nsorry you have entered wrong value enter again");
-		i=i-1;
-	}
+
 }
 printf("\n\nprocess----------- status----------required resources------ available ------ busy resources ");
 
@@ -271,4 +304,3 @@ pthread_join(t3,NULL);
 pthread_join(t4,NULL);
 pthread_join(t5,NULL);
 }
-
