@@ -237,6 +237,7 @@ if(licenses>MAX_RESOURCES)
 	francy=MAX_RESOURCES;
 }
 else
+
 {
 	francy=licenses;
 }
@@ -287,7 +288,11 @@ printf("\nThere are only %d resources so provide input 1<=x<=%d",MAX_RESOURCES,M
 for(int i=1;i<=5;i++)
 {
 	printf("\napplication %d :",i);scanf("%d",&licenses[i-1]);
-
+	if(licenses[i-1]==0)
+	{
+		printf("\nsorry you have entered wrong value enter again");
+		i=i-1;
+	}
 }
 printf("\n\nprocess----------- status----------required resources------ available ------ busy resources ");
 
