@@ -5,7 +5,7 @@
 #include<stdbool.h>
 #define MAX_RESOURCES 5
 int avl_resources=MAX_RESOURCES;
-sem_t sema,dema,mema;
+sem_t sema,dema;
 bool pro[5]={false};
 //decrement funtion
 int decrease_count(int count,int *wcount)
